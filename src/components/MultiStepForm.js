@@ -8,9 +8,9 @@ class MultiStepForm extends Component {
         step: 1,
         businessName: '',
         email: '',
-        sellerId: '',
+        seller: '',
         address: '',
-        countryId: '',
+        country: '',
     }
 
     nextStep = () => {
@@ -30,20 +30,24 @@ class MultiStepForm extends Component {
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
+	loadValues = (values) => {
+        this.setState({...values})
+		this.nextStep();
+    }	
 
     render() {
-        const { step, businessName, sellerId, email, address, countryId } = this.state;
-        const inputValues = { businessName, sellerId, email, address, countryId };
+        const { step, businessName, seller, email, address, country,password } = this.state;
+        const inputValues = { businessName, seller, email, address, country,password };
         switch (step) {
             case 1:
                 return <UserDetails
-                    nextStep={this.nextStep}
+                    loadValues={this.loadValues}
                     handleChange={this.handleChange}
                     inputValues={inputValues}
                 />
             case 2:
                 return <AddressDetails
-                    nextStep={this.nextStep}
+                    loadValues={this.loadValues}
                     prevStep={this.prevStep}
                     handleChange={this.handleChange}
                     inputValues={inputValues}
