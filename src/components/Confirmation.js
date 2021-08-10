@@ -10,7 +10,8 @@ const schema = yup.object().shape({
     return SUPPORTED_FORMATS.includes(value.type)
 	}
   }),
-	location: yup.string().required('location is required'),
+	lat: yup.string().required('latitude is required'),
+	lang: yup.string().required('longitude is required'),
 });
 
 
@@ -18,35 +19,30 @@ const schema = yup.object().shape({
 class Confirmation extends Component {
 	constructor(props) {
     super(props);
-		this.state = {
-		  person: []
-		};
+		this.state = {};
     }
     back = (e) => {
         e.preventDefault();
         this.props.prevStep();
     }
 	
-    saveAndContinue = (e) => {
-        e.preventDefault();
-        this.props.nextStep();
-    };
-
     render() {
   
 
         return (
             <Container>
                 <Formik
+		enableReinitialize		
       validationSchema={schema}
        onSubmit={(values, actions) => {
 		   console.log(values);
-		  // this.props.nextStep();
+		   //this.props.nextStep();
        }}  
       initialValues={{
         address: '',
         file: '',
-        location: ''
+        lat: this.props.inputValues.lat,
+		lang:this.props.inputValues.lang
       }}
     >
       {({
@@ -84,7 +80,7 @@ class Confirmation extends Component {
 
                                     <div className="mb-3">
                                         <Form.Group as={Col} className="mb-3">
-                                            <Form.Label>Default file input example</Form.Label>
+                                            <Form.Label>Proof Document</Form.Label>
                                             <Form.Control
 												id="file"
 												name="file"
@@ -104,17 +100,33 @@ class Confirmation extends Component {
 
                                     <div className="mb-3">
                                         <Form.Group as={Col}>
-                                            <Form.Label className="label">Location</Form.Label>
+                                            <Form.Label className="label">Latitude</Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                name="location"
-												value={values.location}
+                                                name="lat"
+												value={values.lat}
 												onChange={handleChange}
-												isValid={touched.location && !errors.location}
-												isInvalid={touched.location && !!errors.location}
+												isValid={touched.lat && !errors.lat}
+												isInvalid={touched.lat && !!errors.lat}
 											/>
-										{touched.location && errors.location ? (
-								<Form.Control.Feedback type="invalid">{errors.location}</Form.Control.Feedback>
+										{touched.lat && errors.lat ? (
+								<Form.Control.Feedback type="invalid">{errors.lat}</Form.Control.Feedback>
+                        ) : null}
+                                        </Form.Group>
+                                    </div>
+									<div className="mb-3">
+                                        <Form.Group as={Col}>
+                                            <Form.Label className="label">Longitude</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                name="lang"
+												value={values.lang}
+												onChange={handleChange}
+												isValid={touched.lang && !errors.lang}
+												isInvalid={touched.lang && !!errors.lang}
+											/>
+										{touched.lang && errors.lang ? (
+								<Form.Control.Feedback type="invalid">{errors.lang}</Form.Control.Feedback>
                         ) : null}
                                         </Form.Group>
                                     </div>

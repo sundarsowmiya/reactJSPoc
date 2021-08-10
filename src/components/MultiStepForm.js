@@ -11,8 +11,24 @@ class MultiStepForm extends Component {
         seller: '',
         address: '',
         country: '',
+		lat:'',
+		lang:''
     }
-
+	componentDidMount() {		
+		const success = position => {
+			const latitude = position.coords.latitude;
+			const longitude = position.coords.longitude;
+			this.setState({
+			  lat: latitude,
+			  lang: longitude
+			});
+		};
+	  const error = () => {
+		console.log("Unable to retrieve your location");
+	  };
+	  navigator.geolocation.getCurrentPosition(success, error);
+		
+	}
     nextStep = () => {
         const { step } = this.state
         this.setState({
@@ -36,8 +52,8 @@ class MultiStepForm extends Component {
     }	
 
     render() {
-        const { step, businessName, seller, email, address, country,password } = this.state;
-        const inputValues = { businessName, seller, email, address, country,password };
+        const { step, businessName, seller, email, address, country,password,lat,lang } = this.state;
+        const inputValues = { businessName, seller, email, address, country,password,lat,lang };
         switch (step) {
             case 1:
                 return <UserDetails
